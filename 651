@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfs(int i, int j, vector<vector<int>> &isConnected)
+    {
+        // mark the city as visited
+        isConnected[i][j] = 0;
+        // Recurse for the further connected cities 
+        for(auto c = 0; c< isConnected.size(); c++)
+        {
+            if(isConnected[j][c]==1)
+                dfs(j,c,isConnected);
+        }
+        
+    }
+int findCircleNum(vector<vector<int>>& isConnected) {
+        int numProvinces = 0;
+        for(int i=0;i<isConnected.size();i++)
+        {
+            for(int j=0; j<isConnected[0].size(); j++)
+            {
+                 // if city is connected do dfs traversal of connected cities
+                if(isConnected[i][j]==1)
+                {
+                    // After dfs we will have only count of disjoint provinces.
+                    numProvinces++;
+                    dfs(i,j,isConnected);
+                } 
+            }
+        }
+        return numProvinces;
+}
+
+
+int main() {
+	int tc;
+	cin>>tc;
+	while(tc--){
+	    int n;
+	    cin>>n;
+	    vector<vector<int>>edge(n,vector<int>(n,-1));
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<n;j++){
+	            cin>>edge[i][j];
+	        }
+	    }
+	    cout<<findCircleNum(edge);
+	}
+}
